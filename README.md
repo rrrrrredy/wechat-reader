@@ -6,7 +6,7 @@ Read WeChat Official Account articles and convert to Markdown — no login requi
 
 ## What It Does
 
-Takes any `mp.weixin.qq.com` article URL and extracts the full content as structured Markdown, including title, author, publish date, and body text. Uses headless browser automation (Camoufox) with proxy support to bypass WeChat's anti-scraping measures. Handles lazy-loaded images and complex formatting.
+Takes any `mp.weixin.qq.com` article URL and extracts the full content as structured Markdown, including title, author, publish date, and body text. Uses httpx with mobile User-Agent and upstream proxy to fetch article HTML, then converts to Markdown with markdownify. Images appear as empty `![]()` placeholders (expected behavior — image URLs are WeChat-internal and not directly downloadable).
 
 ## Quick Start
 
@@ -25,7 +25,7 @@ bash scripts/setup.sh
 
 - **Full article extraction**: Title, author, publish date, and body text
 - **Markdown output**: Clean, structured Markdown with proper headings and formatting
-- **Image handling**: Triggers lazy-loading to capture all images
+- **Image placeholders**: Image positions preserved as Markdown placeholders (WeChat CDN blocks direct download)
 - **Proxy support**: Built-in upstream proxy configuration for network access
 - **No login required**: Works with public articles without authentication
 - **Error resilience**: Timeout handling and fallback selectors
@@ -59,9 +59,10 @@ wechat-reader/
 
 - [OpenClaw](https://github.com/openclaw/openclaw) agent runtime
 - Python 3.8+
-- `camoufox` (stealth browser)
+- `httpx` (HTTP client with proxy support)
 - `markdownify` (HTML to Markdown)
-- HTTP proxy for WeChat server access
+- `beautifulsoup4` (HTML parsing)
+- HTTP upstream proxy for WeChat server access (direct IP blocked)
 
 ## License
 
